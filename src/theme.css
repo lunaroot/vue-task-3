@@ -427,9 +427,17 @@ h3 {
 }
 
 .text-white {
-    color: #fff;
+  color: #fff;
 }
 
 .text-white.center {
-    text-align: center;
+  text-align: center;
+}
+
+.text-primary {
+  color: #3eaf7c;
+}
+
+.text-primary.center {
+  text-align: center;
 }

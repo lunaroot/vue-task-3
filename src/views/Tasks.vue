@@ -1,30 +1,33 @@
 <template>
-  <h1 class="text-white center">Задач пока нет</h1>
-  <h3 class="text-white">
+  <h3 class="text-white" v-if="tasks.length">
     Всего задач: {{ tasks.length }}
-    Всего активных задач: 0
   </h3>
-  <div class="card">
+  <h3 class="text-primary" v-if="tasks.length">
+    Всего активных задач: {{ activeTasks.length }}
+  </h3>
+  <div class="card" v-for="task in tasks" :key="task.id" v-if="tasks.length">
     <h2 class="card-title">
-      Название задачи
-      <AppStatus :type="'done'" />
+      {{ task.title }}
+      <AppStatus :type="task.status" />
     </h2>
     <p>
-      <small>{{ new Date().toLocaleDateString() }}</small>
+      <small>{{ task.date }}</small>
     </p>
     <button class="btn primary">Посмотреть</button>
+  </div>
+  <div class="alert primary" v-else>
+    <p>Задач пока нет</p>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue'
 import { mapGetters } from 'vuex'
 import AppStatus from '../components/AppStatus'
 
 export default {
-  setup() {
-    return {
-      ...mapGetters(['tasks'])
-    }
+  computed: {
+    ...mapGetters(['tasks', 'activeTasks'])
   },
 
   components: {

@@ -25,11 +25,14 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
-import { mapActions } from 'vuex'
+import { ref, watch, isRef } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
   setup() {
+    const store = useStore()
+    const router = useRouter()
     const isDisabled = ref(true)
     const title = ref('')
     const date = ref('')
@@ -44,7 +47,10 @@ export default {
       title,
       date,
       description,
-      ...mapActions(['createNewTask'])
+      createNewTask(task) {
+        store.dispatch('createNewTask', task)
+        router.push('/')
+      }
     }
   }
 }

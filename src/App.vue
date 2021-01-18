@@ -17,13 +17,15 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { onMounted } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   setup() {
-    return {
-      ...mapActions(['initTasks'])
-    }
+    const store = useStore()
+    onMounted(() => {
+      store.dispatch('initTasks')
+    })
   }
 }
 </script>

@@ -9,19 +9,19 @@ export const store = createStore({
   },
 
   mutations: {
-    addTask(store, { task }) {
-      store.tasks.push(task)
+    addTask(state, task) {
+      state.tasks.push(task)
     },
 
-    setTasks(store, { tasks }) {
-      store.tasks = tasks
+    setTasks(state, tasks) {
+      state.tasks = tasks
     }
   },
 
   actions: {
     initTasks({ commit }) {
       setTimeout(() => {
-        commit('setTasks', JSON.parse(localStorage.getItem('tasks') || []))
+        commit('setTasks', JSON.parse(localStorage.getItem('tasks') || '[]'))
       }, 2 * 1000)
     },
 
@@ -29,21 +29,25 @@ export const store = createStore({
       setTimeout(() => {
         task.id = uuid()
         task.status = 'progress'
-        const tasks = JSON.parse(localStorage.getItem('tasks') || [])
+        const tasks = JSON.parse(localStorage.getItem('tasks') || '[]')
         tasks.push(task)
         localStorage.setItem('tasks', JSON.stringify(tasks))
         commit('addTask', task)
-      }, 5 * 1000)
+      }, 2 * 1000)
     }
   },
 
   getters: {
-    task(store, taskID) {
-      return store.tasks.find((t) => t.id === taskID)
+    tasks(state) {
+      return state.tasks
     },
 
-    tasks(store) {
-      return store.tasks
+    task(state, taskID) {
+      return state.tasks.find((t) => t.id === taskID)
+    },
+
+    activeTasks(state, getters) {
+      return getters.tasks.filter((t) => t.status === 'progress')
     }
   }
 })

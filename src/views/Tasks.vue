@@ -42,7 +42,7 @@ export default {
   },
 
   // computed: {
-  //   ...mapGetters(['tasks', 'activeTasks'])
+  //   ...mapGetters(['tasks', 'activeTasks', 'loading'])
   // },
 
   components: {

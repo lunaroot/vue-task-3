@@ -19,9 +19,9 @@
       })">Отменить</button>
     </div>
   </div>
-  <h3 class="text-white center" v-else-if="!loading">
-    Задачи с id <strong>{{ $route.params.id }}</strong> нет.
-  </h3>
+  <div class="alert primary" v-else-if="!loading">
+    <p>Задачи с id <strong>{{ $route.params.id }}</strong> нет.</p>
+  </div>
   <div class="loader" v-if="loading"></div>
 </template>
 

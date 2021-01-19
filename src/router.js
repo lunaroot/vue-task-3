@@ -6,9 +6,9 @@ import Tasks from './views/Tasks'
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: Tasks },
-    { path: '/new', component: New },
-    { path: '/task/:id', component: Task },
+    { name: 'home', path: '/', component: Tasks },
+    { name: 'new-task', path: '/new', component: New },
+    { name: 'edit-task', path: '/task/:id', component: Task },
   ],
   linkActiveClass: 'active',
   linkExactActiveClass: 'active'

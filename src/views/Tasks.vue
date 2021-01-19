@@ -13,7 +13,10 @@
     <p>
       <small>{{ task.date }}</small>
     </p>
-    <button class="btn primary">Посмотреть</button>
+    <router-link class="btn primary" :to="{
+      name: 'edit-task',
+      params: { id: task.id }
+    }">Посмотреть</router-link>
   </div>
   <div class="alert primary" v-else>
     <p>Задач пока нет</p>

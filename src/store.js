@@ -32,6 +32,7 @@ export const store = createStore({
         const tasks = JSON.parse(localStorage.getItem('tasks') || '[]')
         tasks.push(task)
         localStorage.setItem('tasks', JSON.stringify(tasks))
+
         commit('addTask', task)
       }, 2 * 1000)
     }
@@ -42,7 +43,7 @@ export const store = createStore({
       return state.tasks
     },
 
-    task(state, taskID) {
+    task: (state) => (taskID) => {
       return state.tasks.find((t) => t.id === taskID)
     },
 

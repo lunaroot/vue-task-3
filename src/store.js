@@ -4,13 +4,14 @@ import { v4 as uuid } from 'uuid'
 export const store = createStore({
   state() {
     return {
+      isLoadData: false,
       tasks: []
     }
   },
 
   mutations: {
-    addTask(state, task) {
-      state.tasks.push(task)
+    setLoad(state, load) {
+      state.isLoadData = load
     },
 
     setTasks(state, tasks) {
@@ -19,26 +20,44 @@ export const store = createStore({
   },
 
   actions: {
-    initTasks({ commit }) {
+    syncTasks({ commit }) {
+      commit('setLoad', true)
       setTimeout(() => {
         commit('setTasks', JSON.parse(localStorage.getItem('tasks') || '[]'))
+        commit('setLoad', false)
       }, 2 * 1000)
     },
 
-    createNewTask({ commit }, task) {
-      setTimeout(() => {
-        task.id = uuid()
-        task.status = 'progress'
-        const tasks = JSON.parse(localStorage.getItem('tasks') || '[]')
-        tasks.push(task)
-        localStorage.setItem('tasks', JSON.stringify(tasks))
+    updateTask({ dispatch }, task) {
+      const tasks = JSON.parse(localStorage.getItem('tasks') || '[]')
+      if ((tasks.find((t) => t.id === task.id) || {}).status !== task.status) {
+        localStorage.setItem('tasks', JSON.stringify(tasks.map((t) => {
+          if (t.id === task.id) {
+            t.status = task.status
+          }
+          return t
+        })))
 
-        commit('addTask', task)
-      }, 2 * 1000)
+        dispatch('syncTasks')
+      }
+    },
+
+    createNewTask({ dispatch }, task) {
+      task.id = uuid()
+      task.status = 'progress'
+      const tasks = JSON.parse(localStorage.getItem('tasks') || '[]')
+      tasks.push(task)
+      localStorage.setItem('tasks', JSON.stringify(tasks))
+
+      dispatch('syncTasks')
     }
   },
 
   getters: {
+    loading(state) {
+      return state.isLoadData
+    },
+
     tasks(state) {
       return state.tasks
     },
@@ -47,7 +66,7 @@ export const store = createStore({
       return state.tasks.find((t) => t.id === taskID)
     },
 
-    activeTasks(state, getters) {
+    activeTasks(_, getters) {
       return getters.tasks.filter((t) => t.status === 'progress')
     }
   }

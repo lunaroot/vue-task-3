@@ -24,7 +24,7 @@ export default {
   setup() {
     const store = useStore()
     onMounted(() => {
-      store.dispatch('initTasks')
+      store.dispatch('syncTasks')
     })
   }
 }

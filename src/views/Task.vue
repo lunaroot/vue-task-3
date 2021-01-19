@@ -5,14 +5,24 @@
     <p><strong>Дэдлайн</strong>: {{ task.date }}</p>
     <p><strong>Описание</strong>: {{ task.description }}</p>
     <div>
-      <button class="btn">Взять в работу</button>
-      <button class="btn primary">Завершить</button>
-      <button class="btn danger">Отменить</button>
+      <button class="btn" @click="updateTask({
+        id: task.id,
+        status: 'progress'
+      })">Взять в работу</button>
+      <button class="btn primary" @click="updateTask({
+        id: task.id,
+        status: 'done'
+      })">Завершить</button>
+      <button class="btn danger" @click="updateTask({
+        id: task.id,
+        status: 'cancel'
+      })">Отменить</button>
     </div>
   </div>
-  <h3 class="text-white center" v-else>
+  <h3 class="text-white center" v-else-if="!loading">
     Задачи с id <strong>{{ $route.params.id }}</strong> нет.
   </h3>
+  <div class="loader" v-if="loading"></div>
 </template>
 
 <script>
@@ -27,7 +37,11 @@ export default {
     const route = useRoute()
 
     return {
-      task: computed(() => store.getters.task(route.params.id))
+      task: computed(() => store.getters.task(route.params.id)),
+      loading: computed(() => store.getters.loading),
+      updateTask(task) {
+        store.dispatch('updateTask', task)
+      }
     }
   },
 

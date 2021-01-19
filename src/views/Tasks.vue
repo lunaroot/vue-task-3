@@ -18,9 +18,10 @@
       params: { id: task.id }
     }">Посмотреть</router-link>
   </div>
-  <div class="alert primary" v-else>
+  <div class="alert primary" v-else-if="!loading">
     <p>Задач пока нет</p>
   </div>
+  <div class="loader" v-if="loading"></div>
 </template>
 
 <script>
@@ -35,7 +36,8 @@ export default {
 
     return {
       tasks: computed(() => store.getters.tasks),
-      activeTasks: computed(() => store.getters.activeTasks)
+      activeTasks: computed(() => store.getters.activeTasks),
+      loading: computed(() => store.getters.loading)
     }
   },
 

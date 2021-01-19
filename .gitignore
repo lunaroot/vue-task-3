@@ -1,4 +1,6 @@
 .DS_Store
+.firebaserc
+firebase.json
 
 # Logs
 logs

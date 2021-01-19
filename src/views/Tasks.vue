@@ -21,14 +21,24 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import { mapGetters } from 'vuex'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+// import { mapGetters } from 'vuex'
 import AppStatus from '../components/AppStatus'
 
 export default {
-  computed: {
-    ...mapGetters(['tasks', 'activeTasks'])
+  setup() {
+    const store = useStore()
+
+    return {
+      tasks: computed(() => store.getters.tasks),
+      activeTasks: computed(() => store.getters.activeTasks)
+    }
   },
+
+  // computed: {
+  //   ...mapGetters(['tasks', 'activeTasks'])
+  // },
 
   components: {
     AppStatus
